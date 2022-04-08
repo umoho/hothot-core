@@ -6,15 +6,27 @@ const MOTD: &'static str = "Hot-hot core starting up...";
 
 fn main() {
     println!("\n{}", MOTD.blue().bold());
+    let start = std::time::Instant::now();
 
     ctrlc::set_handler(
         move || {
             println!("{}", "\nShutting down...".red().italic());
+
+            let end = std::time::Instant::now();
+            let elapsed = end.duration_since(start);
+            println!("{}", format!(
+                "Run for {} seconds", elapsed.as_secs_f32().round()
+            ).yellow().italic());
+
             std::process::exit(0);
         }
     ).expect(format!("{}", "Failed to set Ctrl-C handler.".red().italic()).as_str());
 
-    let running_threads = get_max_threads() / 2;
+    let running_threads = if get_max_threads() / 2 < 1 {
+        1
+    } else {
+        get_max_threads() / 2
+    };
     println!("{}", format!("Running {} threads...", running_threads).green().italic());
     play::multi_thread(running_threads);
 }
