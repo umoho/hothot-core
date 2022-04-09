@@ -1,4 +1,11 @@
-# `Hot-hot`
+# <center>`Hot-hot`</center>
+
+<center>
+
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/umoho/hothot-core?include_prereleases&style=plastic)
+![GitHub watchers](https://img.shields.io/github/watchers/umoho/hothot-core?style=plastic)
+
+</center>
 
 * Just run it in command line
 * It will create threads and do calculations
@@ -19,7 +26,9 @@ threads = -1
 ```
 So it can also work without config file
 
-## On linux
+## Usage
+### On linux
+On your **shell**
 ```
 ./hothot-core
 ```
@@ -28,7 +37,14 @@ or
 ./hothot-core -c config.toml
 ```
 
-## On windows
+### On windows
+Recommended to use **Terminal**, because it can support color
 ```
 .\hothot-core.exe
 ```
+## Build
+Use Cargo to build
+```
+cargo build --release
+```
+
