@@ -14,7 +14,7 @@
 
 ## Options
 #### Use --config to set the config file
-* File type is toml
+* File type is `toml`
 * It can also work with -c
 * Default config will be use if no config file is set or has something wrong...
 
