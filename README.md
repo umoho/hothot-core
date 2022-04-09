@@ -13,9 +13,9 @@
 * **Use Ctrl-C to stop**
 
 ## Options
-#### Use --config to set the config file
+#### Use `--config` to set the config file
 * File type is `toml`
-* It can also work with -c
+* It can also work with `-c`
 * Default config will be use if no config file is set or has something wrong...
 
 #### Default config like following
