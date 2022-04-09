@@ -1,0 +1,3 @@
+# settings
+method = "md5"
+threads = -1

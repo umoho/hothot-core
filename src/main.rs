@@ -1,13 +1,33 @@
 mod play;
+mod conf;
+mod info;
+mod cli;
 
 use colored::*;
 
-const MOTD: &'static str = "Hot-hot core starting up...";
+const MOTD: &str = "Hot-hot core starting up...";
+const AUTHORS: &str = env!("CARGO_PKG_AUTHORS");
+const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 fn main() {
-    println!("\n{}", MOTD.blue().bold());
-    let start = std::time::Instant::now();
+    println!("\n");
 
+    handler_registering();
+    broadcast_registering(60.0);
+
+    let config_path = cli::parse_args().config;
+    let config = conf::Config::from_file(&config_path);
+
+    println!("\n{}", MOTD.blue().bold());
+    println!("{}\n{}",
+        format!("\tAuthor: {}", AUTHORS).cyan(),
+        format!("\tVersion: {}", VERSION).cyan());
+
+    play::multi_thread(config);
+}
+
+fn handler_registering() {
+    let start = std::time::Instant::now();
     ctrlc::set_handler(
         move || {
             println!("{}", "\nShutting down...".red().italic());
@@ -20,22 +40,9 @@ fn main() {
 
             std::process::exit(0);
         }
-    ).expect(format!("{}", "Failed to set Ctrl-C handler.".red().italic()).as_str());
-
-    let running_threads = if get_max_threads() / 2 < 1 {
-        1
-    } else {
-        get_max_threads() / 2
-    };
-    println!("{}", format!("Running {} threads...", running_threads).green().italic());
-    play::multi_thread(running_threads);
+    ).expect(format!("{}", "Failed to set Ctrl-C handler".red().italic()).as_str());
 }
 
-// get machine max threads
-fn get_max_threads() -> u32 {
-    let num_cpus = num_cpus::get();
-    if num_cpus <= 0 {
-        panic!("{}", "Failed to get number of CPUs.".red().bold().italic());
-    }
-    num_cpus as u32
+fn broadcast_registering(secs: f32) {
+    info::broadcast(std::time::Duration::from_secs_f32(secs));
 }
